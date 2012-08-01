@@ -7,8 +7,8 @@ public class Goban {
 	public static void main(String[] args) {
 		Goban goban = new Goban();
 		goban.setCross(Color.WHITE, 0, 0);
-//		goban.setCross(Cross.WHITE, DIMENSION-1, 0);
-//		goban.setCross(Cross.BLACK, 0, DIMENSION-1);
+		goban.setCross(Color.WHITE, DIMENSION-1, 0);
+		goban.setCross(Color.BLACK, 0, DIMENSION-1);
 		goban.setCross(Color.BLACK, DIMENSION-1, DIMENSION-1);
 		System.out.println(goban);
 	}
@@ -29,22 +29,17 @@ public class Goban {
 	
 	public boolean checkValidMove(Color color, int x, int y){
 		// TODO add control stuff
+		// TODO suicide control
 		if(getColor(x, y) != Color.EMPTY){
 			return false;
 		}
 		return true;
 	}
 	
-	public boolean setCross(Color color, int x, int y){
-		if(checkValidMove(color, x, y)){
-			switch (color) {
-			case BLACK:
-			case WHITE:
-				matrix[x*DIMENSION + y].setColor(color);
-				break;
-			case EMPTY:
-				return false;
-			}
+	public boolean move(Color color, int x, int y){
+		if(color != Color.EMPTY && checkValidMove(color, x, y)){
+			
+			matrix[x*DIMENSION + y].setColor(color);
 			return true;
 		}
 		return false;
