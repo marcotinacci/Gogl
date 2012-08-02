@@ -20,13 +20,16 @@ public class Cross{
 	private Cross up;
 	private Cross down;
 	
-	public Cross(Cross left, Cross right, Cross up, Cross down) {
+	public Cross() {
+		children = new LinkedList<Cross>();
+		children.add(this);
+	}
+	
+	public void setConnections(Cross left, Cross right, Cross up, Cross down){
 		this.left = left;
 		this.right = right;
 		this.up = up;
 		this.down = down;
-		children = new LinkedList<Cross>();
-		children.add(this);
 	}
 	
 	public int size(){
