@@ -6,56 +6,40 @@ import ibm650.gogl.exception.BadMoveException;
 public class Goban {
 	
 	public static void main(String[] args) {
-		Goban goban = new Goban();
+		Goban goban = new Goban(9);
 		try {
 			goban.move(Color.WHITE, 0, 0);
-			goban.move(Color.WHITE, DIMENSION-1, 0);
+			goban.move(Color.WHITE, goban.getDimension()-1, 0);
 //			goban.move(Color.BLACK, 0, DIMENSION-1);
-			goban.move(Color.BLACK, DIMENSION-1, DIMENSION-1);
+			goban.move(Color.BLACK, goban.getDimension()-1, goban.getDimension()-1);
 		} catch (BadMoveException e) {
 			e.printStackTrace();
 		}
 		System.out.println(goban);
 	}
 	
-	static public short DIMENSION = 9;
+	private short DIMENSION;
 	private Cross[] matrix;
 	
-	public Goban() {
+	private Cross lastBlackMove = null;
+	private Cross lastWhiteMove = null;
+	
+	public Goban(){
+		this(19);
+	}
+	
+	public Goban(int dim) {
+		DIMENSION = (short)dim;
+		
 		// instanciate crosses
 		matrix = new Cross[DIMENSION * DIMENSION];
 		for (int i = 0; i < DIMENSION; i++) {
 			for (int j = 0; j < DIMENSION; j++) {
-				setCross(new Cross(), i, j);
+				setCross(new Cross(this, i*DIMENSION+j), i, j);
 			}
 		}
-		
-		// set connections
-		for (short i = 0; i < DIMENSION; i++) {
-			for(short j = 0; j < DIMENSION; j++){
-				Cross left, right, up, down;
-				if(i == 0){
-					up = null;
-					down = getCross(i+1, j);
-				}else if(i == DIMENSION-1){
-					up = getCross(i-1, j);
-					down = null;
-				}else{
-					up = getCross(i-1, j);
-					down = getCross(i+1, j);
-				}
-				if(j == 0){
-					left = null;
-					right = getCross(i, j+1);
-				}else if(j == DIMENSION-1){
-					left = getCross(i, j-1);
-					right = null;
-				}else{
-					left = getCross(i, j-1);
-					right = getCross(i, j+1);
-				}
-				getCross(i, j).setConnections(left, right, up, down);
-			}
+		for (Cross cross : matrix) {
+			cross.setConnections();
 		}
 	}
 	
@@ -68,7 +52,12 @@ public class Goban {
 	}
 	
 	public void move(Color color, int x, int y) throws BadMoveException{
-		matrix[x*DIMENSION + y].move(color);
+		getCross(x, y).move(color);
+		updateLastMove(getCross(x, y));
+	}
+	
+	public short getDimension(){
+		return DIMENSION;
 	}
 	
 	@Override
@@ -76,11 +65,27 @@ public class Goban {
 		StringBuffer string = new StringBuffer();
 		for (short x = (short) (DIMENSION-1); x >= 0; x--) {
 			for (short y = 0; y < DIMENSION; y++) {
-				string.append(getCross(x, y).getColor());
+				string.append(getCross(x, y).getColor().toString().charAt(0));
 				string.append(' ');
 			}
 			string.append('\n');
 		}
 		return string.toString();
+	}
+
+	private void updateLastMove(Cross cross){
+		if(cross.getColor().equals(Color.BLACK)){
+			lastBlackMove = cross;
+		}else if(cross.getColor().equals(Color.WHITE)){
+			lastWhiteMove = cross;
+		}
+	}
+	
+	public Cross getLastMove(Color color) {
+		return color.equals(Color.WHITE) ? lastWhiteMove : lastBlackMove;
+	}
+
+	public Cross[] getMatrix() {
+		return matrix;
 	}
 }
