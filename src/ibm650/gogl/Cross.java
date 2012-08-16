@@ -40,7 +40,7 @@ public class Cross{
 			neighbourhood.add(goban.getMatrix()[id + goban.getDimension()]);
 		if(id % goban.getDimension() > 0)
 			neighbourhood.add(goban.getMatrix()[id - 1]);
-		if(id % goban.getDimension() < goban.getDimension() - 1)
+		if(id % goban.getDimension() < goban.getDimension()-1)
 			neighbourhood.add(goban.getMatrix()[id + 1]);
 	}
 	

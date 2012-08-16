@@ -5,22 +5,8 @@ import ibm650.gogl.exception.BadMoveException;
 
 public class Goban {
 	
-	public static void main(String[] args) {
-		Goban goban = new Goban(9);
-		try {
-			goban.move(Color.WHITE, 0, 0);
-			goban.move(Color.WHITE, goban.getDimension()-1, 0);
-//			goban.move(Color.BLACK, 0, DIMENSION-1);
-			goban.move(Color.BLACK, goban.getDimension()-1, goban.getDimension()-1);
-		} catch (BadMoveException e) {
-			e.printStackTrace();
-		}
-		System.out.println(goban);
-	}
-	
 	private short DIMENSION;
 	private Cross[] matrix;
-	
 	private Cross lastBlackMove = null;
 	private Cross lastWhiteMove = null;
 	
