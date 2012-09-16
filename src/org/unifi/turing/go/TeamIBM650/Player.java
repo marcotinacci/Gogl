@@ -36,14 +36,14 @@ public class Player extends AbstractPlayer {
 
 	private int myID;
 	private Goban goban;
-	private PatternSeeker inspector;
+	private PatternSeeker potter;
 
 	/**
 	 *
 	 */
 	public Player() {
 		this.goban = new Goban();
-		this.inspector = new PatternSeeker(goban.getSize());
+		this.potter = new PatternSeeker(goban.getSize());
 	}
 
 	/*
@@ -64,9 +64,9 @@ public class Player extends AbstractPlayer {
 		if (lastAdversaryMove != null) {
 			goban.putStoneAt(myID == 1 ? Stone.WHITE : Stone.BLACK,
 					lastAdversaryMove[0], lastAdversaryMove[1]);
-			inspector.ban.getGoban()[lastAdversaryMove[0]][lastAdversaryMove[1]] = 3 - myID;
+			potter.ban.getGoban()[lastAdversaryMove[0]][lastAdversaryMove[1]] = 3 - myID;
 		} else {
-			double[] score = inspector.ban.computeFinalScore();
+			double[] score = potter.ban.computeFinalScore();
 			if (score[myID - 1] > score[myID % 2])
 				return null;
 		}
@@ -76,13 +76,14 @@ public class Player extends AbstractPlayer {
 		for (int r = 0; r < n; r++)
 			for (int c = 0; c < n; c++)
 				if (goban.getStone(r, c) == myStone)
-					inspector.ban.getGoban()[r][c] = myID;
+					potter.ban.getGoban()[r][c] = myID;
 				else if (goban.getStone(r, c) == Stone.NONE)
-					inspector.ban.getGoban()[r][c] = 0;
+					potter.ban.getGoban()[r][c] = 0;
 				else
-					inspector.ban.getGoban()[r][c] = 3 - myID;
+					potter.ban.getGoban()[r][c] = 3 - myID;
 
-		LinkedList<Position> candidates = inspector.seek();
+		LinkedList<Position> candidates = potter.seek();
+
 		if (candidates.size() > 0) {
 			Collections.shuffle(candidates);
 			for (Position p : candidates)

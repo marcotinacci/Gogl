@@ -50,8 +50,8 @@ public class Pattern {
 	public ArrayList<Position> match(int[][] text) {
 		ArrayList<Position> matches = patternSearch.match(text);
 		for (Position match : matches) {
-			match.setX(match.getX() + this.move[0] - 1);
-			match.setY(match.getY() + this.move[1] - 1);
+			match.setX(match.getX() + this.move[0]);
+			match.setY(match.getY() + this.move[1]);
 		}
 		return matches;
 	}

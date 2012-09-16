@@ -56,7 +56,7 @@ public class BakerBird {
 				KMPstates[j] = KMPres.getState();
 
 				if (KMPres.getMatched())
-					res.add(new Position(i - ACGo.patterns.length + 2, j));
+					res.add(new Position(i - ACGo.patterns.length + 1, j - 1));
 
 			}
 		}
