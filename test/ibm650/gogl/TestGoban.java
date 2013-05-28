@@ -173,6 +173,25 @@ public class TestGoban {
 		}
 	}
 	
-	
+	@Test
+	public void testDegree() {
+		try {
+			goban.move(Color.BLACK, 2, 2);
+			goban.move(Color.BLACK, 2, 3);
+			goban.move(Color.BLACK, 2, 4);
+			goban.move(Color.BLACK, 4, 2);
+			goban.move(Color.BLACK, 4, 3);
+			goban.move(Color.BLACK, 4, 4);
+			
+			System.out.println("grado 1:"+ goban.getCross(2, 2).getFreedom());
+			System.out.println("grado 2:"+ goban.getCross(4, 2).getFreedom());
+			
+			goban.move(Color.BLACK, 3, 3);
+			System.out.println("grado 3:"+ goban.getCross(4, 2).getFreedom());
+			
+		} catch (BadMoveException e) {
+			fail("Bad move!");
+		}
+	}
 	
 }
